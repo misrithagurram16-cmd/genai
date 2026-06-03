@@ -4,9 +4,10 @@ import streamlit as st
 st.set_page_config(page_title="My AI Chatbot", page_icon="🤖")
 st.title("🤖 My AI Chatbot")
 st.caption("Powered by LLaMA 3.3 via Groq")
-
-client = Groq(api_key="REMOVED")
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 personas = {
     "Helpful Assistant": "You are a helpful AI assistant.",
     "Interview Coach": "You are an expert interview coach for software engineering roles. Help the user practice and improve their answers.",

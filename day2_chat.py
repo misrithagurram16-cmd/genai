@@ -1,6 +1,9 @@
 from groq import Groq
 
-client = Groq(api_key="REMOVED")
+import os
+from dotenv import load_dotenv
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 print("🤖 AI Chat — type 'quit' to exit\n")
 

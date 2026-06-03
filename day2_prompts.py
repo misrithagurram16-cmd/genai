@@ -1,7 +1,9 @@
 from groq import Groq
 
-client = Groq(api_key="REMOVED")
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 # Try changing the system prompt and see how the AI personality changes
 system_prompts = [
     "You are a pirate. Respond only in pirate language.",

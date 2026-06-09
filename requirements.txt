@@ -1,3 +1,10 @@
 groq
 streamlit
 python-dotenv
+langchain
+langchain-community
+langchain-text-splitters
+pypdf
+chromadb
+sentence-transformers
+huggingface-hub

@@ -9,4 +9,4 @@ chromadb
 sentence-transformers
 huggingface-hub
 tavily-python
-youtube-transcript-api==0.6.3
+youtube-transcript-api==1.2.4

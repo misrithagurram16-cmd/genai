@@ -146,10 +146,10 @@ def get_video_id(url):
     return None
 
 def get_transcript(video_id):
-    ytt = YouTubeTranscriptApi()
-    transcript = ytt.fetch(video_id)
-    return " ".join([t.text for t in transcript])
-
+    from youtube_transcript_api import YouTubeTranscriptApi
+    ytt_api = YouTubeTranscriptApi()
+    fetched = ytt_api.fetch(video_id)
+    return " ".join([snippet.text for snippet in fetched])
 def summarize(transcript, style):
     style_map = {
         "Concise": "Be very concise. Keep each section short.",

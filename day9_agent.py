@@ -182,30 +182,41 @@ def get_report_json(topic, context, style):
         model="llama-3.3-70b-versatile",
         messages=[
             {"role": "system", "content": f"""You are a research analyst. Write in a {style_instruction} tone.
-            
-Return ONLY a valid JSON object with exactly these keys:
-{{
-  "title": "report title",
-  "summary": "2-3 sentence executive summary",
-  "findings": ["finding 1", "finding 2", "finding 3", "finding 4", "finding 5"],
-  "analysis": "3 paragraphs of detailed analysis separated by newlines",
-  "trends": "2 paragraphs about current trends separated by newlines",
-  "conclusion": "1 paragraph conclusion",
-  "sources": ["url1", "url2", "url3"]
-}}
 
-Return ONLY the JSON, no other text."""},
+Return ONLY a valid JSON object. No markdown, no backticks, no explanation. Just raw JSON.
+
+{{
+  "title": "report title here",
+  "summary": "2-3 sentence executive summary here",
+  "findings": ["finding 1", "finding 2", "finding 3", "finding 4", "finding 5"],
+  "analysis": "paragraph 1 here. paragraph 2 here. paragraph 3 here.",
+  "trends": "paragraph 1 here. paragraph 2 here.",
+  "conclusion": "conclusion paragraph here.",
+  "sources": ["url1", "url2", "url3"]
+}}"""},
             {"role": "user", "content": f"Topic: {topic}\n\nSources:\n{context}"}
         ]
     )
     text = response.choices[0].message.content.strip()
-    # Clean up if needed
-    if text.startswith("```"):
-        text = text.split("```")[1]
-        if text.startswith("json"):
-            text = text[4:]
-    return json.loads(text.strip())
 
+    # Clean up any markdown formatting
+    if "```" in text:
+        parts = text.split("```")
+        for part in parts:
+            part = part.strip()
+            if part.startswith("json"):
+                part = part[4:].strip()
+            if part.startswith("{"):
+                text = part
+                break
+
+    # Find JSON object
+    start = text.find("{")
+    end = text.rfind("}") + 1
+    if start != -1 and end > start:
+        text = text[start:end]
+
+    return json.loads(text)
 # Search form
 topic = st.text_input("", placeholder="What do you want to research?", label_visibility="collapsed")
 

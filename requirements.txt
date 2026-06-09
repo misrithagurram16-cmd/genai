@@ -8,3 +8,4 @@ pypdf
 chromadb
 sentence-transformers
 huggingface-hub
+tavily-python
